@@ -1,128 +1,117 @@
-# Abdelrahman — Systems Builder
+# SWeVL — Software Engineer
 
-> Personal portfolio for Abdelrahman, focused on AI systems, agents, mobile applications, and real-time backends.
+A personal portfolio showcasing software engineering, AI, backend systems, and interactive projects.
 
-**Live site:** [Deploy with Vercel](https://vercel.com/)
+## Live Portfolio
 
-The portfolio is a single-page, responsive site with an interactive AI assistant that helps visitors explore the work and encourages serious project inquiries.
+**[Visit the portfolio](https://your-site.vercel.app)**
 
-## What is here
+> Replace the URL above with the final Vercel/custom-domain URL after deployment.
 
-- Responsive portfolio UI for desktop, tablet, and mobile
-- Swipeable section navigation on smaller screens
-- Interactive portfolio AI assistant
-- Project and skills presentation
-- Contact-focused visitor flow
-- Custom 404 page, favicon, and social preview asset
-- Vercel serverless API endpoint for the AI assistant
+## What This Project Demonstrates
 
-## Featured work
+This portfolio is more than a static landing page. It demonstrates how I approach building and shipping software:
+
+- Responsive, touch-friendly frontend interfaces
+- AI/LLM integration
+- Server-side API architecture
+- Secure handling of private API credentials
+- Rate limiting and production-oriented API protection
+- Interactive user experiences
+- Git-based development and deployment
+- Clean separation between frontend and backend concerns
+
+## Featured Work
 
 ### ALFRED
 
-A local AI-assistant project exploring conversational interaction, memory, voice, and tool-driven workflows.
+A personal AI assistant focused on conversational interaction, local tooling, memory, and automation.
+
+**Focus:** AI · Python · APIs · automation
 
 ### NEXUS
 
-An experimental software project centered around building connected AI/software systems and practical backend infrastructure.
+A software project exploring structured data, application logic, and intelligent workflows.
 
-See the portfolio itself for the current project descriptions and implementation details.
+**Focus:** backend · databases · application architecture
 
-## Tech
+### Portfolio AI
 
-The portfolio is intentionally lightweight:
+An interactive AI assistant built into this portfolio. It answers questions about my work and technical capabilities using the portfolio's own context.
 
+**Focus:** LLMs · serverless APIs · JavaScript · rate limiting
+
+## Technology
+
+**Languages & Backend**
+- Python
+- JavaScript
+- FastAPI
+- SQLite
+
+**AI & Systems**
+- LLM integration
+- AI agents
+- APIs
+- WebSockets
+- automation
+
+**Frontend & Deployment**
 - HTML
 - CSS
 - JavaScript
-- Vercel serverless functions
-- OpenRouter for the portfolio assistant
-- Upstash Redis for production rate limiting
+- Vercel
+- Git / GitHub
 
-The site has no frontend framework or build step.
+## Project Structure
 
-## Run locally
+```text
+.
+├── index.html
+├── api/
+│   └── chat.js
+├── favicon.svg
+├── og.svg
+├── 404.html
+├── package.json
+└── vercel.json
+```
 
-You can preview the static site directly by opening `index.html`.
+## Running Locally
 
-For a local static server:
+Clone the repository:
+
+```bash
+git clone https://github.com/SWeVLL/portfolio.git
+cd portfolio
+```
+
+For the static portfolio, open `index.html` or run a local server:
 
 ```bash
 npx serve .
 ```
 
-The AI endpoint requires the environment variables described below and is intended to run through Vercel's serverless runtime.
+The AI endpoint requires the appropriate server-side environment variables when running through Vercel.
 
-## Deploy
+## Deployment
 
-### Vercel
+The portfolio is designed to deploy directly from GitHub to Vercel.
 
-Vercel is the recommended deployment target because the site includes `/api/chat`.
+The frontend is public, while private service credentials are configured through deployment environment variables rather than committed to the repository.
 
-1. Import this repository into Vercel.
-2. Use **Other / No Framework** as the framework preset.
-3. Leave the build command empty.
-4. Use the repository root as the output/root directory.
-5. Add the required environment variables.
-6. Deploy.
+## Working With Me
 
-### Environment variables
+If you're looking for someone to build an application, AI-powered feature, backend system, automation, or custom software, get in touch through the portfolio.
 
-Set these in Vercel Project Settings → Environment Variables:
+**Portfolio:** https://your-site.vercel.app
 
-```text
-OPENROUTER_API_KEY=your_key
-OPENROUTER_MODEL=openrouter/free
-SITE_URL=https://your-domain.example
-UPSTASH_REDIS_REST_URL=https://your-database.upstash.io
-UPSTASH_REDIS_REST_TOKEN=your_token
-```
+**Contact:** https://t.me/Abdelrahmann17
 
-`OPENROUTER_API_KEY` and `UPSTASH_REDIS_REST_TOKEN` are secrets. **Never commit their real values to GitHub.**
+## Note
 
-For local development, copy `.env.example` to `.env` and fill in the values. Keep `.env` out of version control.
+This repository contains the source for my portfolio and selected supporting functionality. Some projects and experiments may have their own repositories or private implementations.
 
-## AI assistant
+---
 
-The portfolio assistant is deliberately scoped to the portfolio. Its job is to:
-
-- explain projects and technologies shown on the site
-- answer visitor questions using the portfolio context
-- discuss how Abdelrahman's demonstrated skills could apply to a new project
-- help turn a visitor's idea into a useful starting point
-- guide serious visitors toward direct contact
-
-It should not invent previous experience or pretend a project was already completed when it was not.
-
-### Usage protection
-
-The API enforces a limit of **15 AI replies per IP address per 24 hours** before making another model request. In production, Upstash Redis provides shared rate-limit state across Vercel serverless instances.
-
-After the visitor has had useful exchanges, the UI encourages them to contact Abdelrahman directly. Once the limit is reached, the assistant stops making model requests and directs the visitor to contact him.
-
-## Contact
-
-The portfolio currently links the contact flow to:
-
-**Telegram:** [@Abdelrahmann17](https://t.me/Abdelrahmann17)
-
-Update the link in the site if your preferred contact method changes.
-
-## Repository structure
-
-```text
-.
-├── api/
-│   └── chat.js        # serverless AI endpoint
-├── index.html          # portfolio UI
-├── 404.html            # fallback page
-├── favicon.svg         # browser icon
-├── og.svg              # social preview artwork
-├── vercel.json         # Vercel configuration
-├── package.json        # project metadata
-└── .env.example        # environment variable template
-```
-
-## License
-
-This repository contains a personal portfolio. Unless a separate license is added, the code and design should not be treated as an open-source template for redistribution.
+© 2026 SWeVL
