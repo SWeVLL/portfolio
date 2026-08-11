@@ -1,4 +1,4 @@
-# SWeVL — Software Engineer
+# Abdelrahman — Software Engineer
 
 A personal portfolio showcasing software engineering, AI, backend systems, and interactive projects.
 
@@ -126,4 +126,4 @@ This repository contains the source for my portfolio and selected supporting fun
 
 ---
 
-© 2026 SWeVL
+© 2026 Abdelrahman
