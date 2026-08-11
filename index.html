@@ -416,6 +416,136 @@
   .agent-locked a{color:var(--green);text-decoration:none;}
   .agent-locked a:hover{text-decoration:underline;}
 </style>
+
+<style id="portfolio-ai-markdown">
+.ai-md { line-height: 1.58; overflow-wrap: anywhere; }
+.ai-md p { margin: 0 0 .55rem; }
+.ai-md p:last-child { margin-bottom: 0; }
+.ai-md strong { font-weight: 800; }
+.ai-md em { opacity: .9; }
+.ai-md h2,.ai-md h3,.ai-md h4 { margin: .7rem 0 .35rem; line-height: 1.25; }
+.ai-md h2:first-child,.ai-md h3:first-child,.ai-md h4:first-child { margin-top: 0; }
+.ai-md ul,.ai-md ol { margin: .3rem 0 .65rem 1.25rem; padding: 0; }
+.ai-md li { margin: .18rem 0; padding-left: .12rem; }
+.ai-md li::marker { opacity: .75; }
+.ai-md blockquote {
+  margin: .55rem 0;
+  padding: .35rem .7rem;
+  border-left: 2px solid currentColor;
+  opacity: .82;
+}
+.ai-md code:not(pre code) {
+  padding: .1rem .32rem;
+  border-radius: 4px;
+  background: rgba(127,127,127,.16);
+  font-family: ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size: .91em;
+}
+.ai-md pre {
+  margin: .65rem 0;
+  padding: .75rem .85rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  background: rgba(0,0,0,.27);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+}
+.ai-md pre code {
+  display: block;
+  font-family: ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size: .88em;
+  line-height: 1.55;
+  white-space: pre;
+}
+.ai-md a { text-decoration: underline; text-underline-offset: 2px; }
+.ai-md .md-gap { height: .12rem; }
+</style>
+<script id="portfolio-ai-markdown-js">
+(() => {
+  const esc = s => String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  function inline(src) {
+    let s = esc(src), stash = [];
+    s = s.replace(/`([^`\n]+)`/g, (_, x) => {
+      stash.push('<code>' + x + '</code>');
+      return `\u0000C${stash.length-1}\u0000`;
+    });
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    s = s.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');
+    s = s.replace(/__([^_\n]+)__/g,'<strong>$1</strong>');
+    s = s.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>');
+    s = s.replace(/(?<!_)_([^_\n]+)_(?!_)/g,'<em>$1</em>');
+    return s.replace(/\u0000C(\d+)\u0000/g,(_,i)=>stash[+i]);
+  }
+
+  window.renderPortfolioMarkdown = function(raw) {
+    const lines = String(raw ?? '').replace(/\r\n/g,'\n').trim().split('\n');
+    let out='', code=false, lang='', buf=[], list=null;
+
+    const closeList=()=>{
+      if(list){ out += `</${list}>`; list=null; }
+    };
+
+    for(const line of lines) {
+      const fence=line.match(/^```([\w+-]*)\s*$/);
+      if(fence){
+        closeList();
+        if(!code){ code=true; lang=fence[1]||''; buf=[]; }
+        else {
+          out += `<pre><code${lang ? ` class="language-${esc(lang)}"` : ''}>${esc(buf.join('\n'))}</code></pre>`;
+          code=false; lang=''; buf=[];
+        }
+        continue;
+      }
+      if(code){ buf.push(line); continue; }
+
+      if(!line.trim()){ closeList(); out+='<div class="md-gap"></div>'; continue; }
+
+      const h=line.match(/^(#{1,3})\s+(.+)$/);
+      if(h){
+        closeList();
+        const level=Math.min(h[1].length+1,4);
+        out += `<h${level}>${inline(h[2])}</h${level}>`;
+        continue;
+      }
+
+      const b=line.match(/^\s*[-*+]\s+(.+)$/);
+      if(b){
+        if(list!=='ul'){ closeList(); out+='<ul>'; list='ul'; }
+        out += `<li>${inline(b[1])}</li>`;
+        continue;
+      }
+
+      const n=line.match(/^\s*\d+[.)]\s+(.+)$/);
+      if(n){
+        if(list!=='ol'){ closeList(); out+='<ol>'; list='ol'; }
+        out += `<li>${inline(n[1])}</li>`;
+        continue;
+      }
+
+      const q=line.match(/^\s*>\s?(.*)$/);
+      if(q){ closeList(); out+=`<blockquote>${inline(q[1])}</blockquote>`; continue; }
+
+      closeList();
+      out += `<p>${inline(line)}</p>`;
+    }
+
+    closeList();
+    if(code) out += `<pre><code>${esc(buf.join('\n'))}</code></pre>`;
+    return out;
+  };
+
+  // Safe helper for any AI message renderer.
+  window.setPortfolioAIMessage = function(el, text) {
+    if(!el) return;
+    el.innerHTML = '<div class="ai-md">' + window.renderPortfolioMarkdown(text) + '</div>';
+  };
+})();
+</script>
+
 </head>
 <body id="top">
 

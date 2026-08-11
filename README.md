@@ -1,4 +1,4 @@
-# Abdelrahman — Software Engineer 
+# SWeVL — Software Engineer
 
 A personal portfolio showcasing software engineering, AI, backend systems, and interactive projects.
 
@@ -94,7 +94,7 @@ A mobile application with secure authentication, password hashing, token session
 Clone the repository:
 
 ```bash
-git clone https://github.com/AbdelrahmanL/portfolio.git
+git clone https://github.com/SWeVLL/portfolio.git
 cd portfolio
 ```
 
@@ -126,4 +126,4 @@ This repository contains the source for my portfolio and selected supporting fun
 
 ---
 
-© 2026 Abdelrahman
+© 2026 SWeVL
