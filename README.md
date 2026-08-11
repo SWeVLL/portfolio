@@ -1,75 +1,128 @@
-# abdelrahman.dev — portfolio
+# Abdelrahman — Systems Builder
 
-Single-page portfolio site. No build step, no dependencies — pure HTML/CSS/JS.
+> Personal portfolio for Abdelrahman, focused on AI systems, agents, mobile applications, and real-time backends.
 
-## Structure
+**Live site:** [Deploy with Vercel](https://vercel.com/)
 
-```
-index.html      the whole site
-favicon.svg     tab icon
-og.svg          social link-preview image
-404.html        not-found page
-vercel.json     static-site config (clean URLs)
-```
+The portfolio is a single-page, responsive site with an interactive AI assistant that helps visitors explore the work and encourages serious project inquiries.
 
-## Deploy on Vercel (recommended — free)
+## What is here
 
-**Option A — no GitHub, fastest:**
-1. Install the CLI once: `npm i -g vercel`
-2. From this folder, run: `vercel`
-3. Follow the prompts (pick any project name, accept defaults — it's a static site, no build command needed)
-4. Run `vercel --prod` to push it live
+- Responsive portfolio UI for desktop, tablet, and mobile
+- Swipeable section navigation on smaller screens
+- Interactive portfolio AI assistant
+- Project and skills presentation
+- Contact-focused visitor flow
+- Custom 404 page, favicon, and social preview asset
+- Vercel serverless API endpoint for the AI assistant
 
-**Option B — via GitHub (recommended if you'll keep editing it):**
-1. Push this folder to a new GitHub repo
-2. Go to [vercel.com/new](https://vercel.com/new), import the repo
-3. Framework preset: **Other** (or "No framework") — leave build command empty, output directory as root `.`
-4. Deploy. Vercel gives you a `*.vercel.app` URL immediately; add a custom domain later in Project Settings → Domains
+## Featured work
 
-## Deploy on GitHub Pages (also free)
+### ALFRED
 
-1. Push this folder to a repo named `<your-username>.github.io` (for a root domain) or any repo name (for a `/reponame` path)
-2. Go to Settings → Pages → Source → deploy from branch `main`, folder `/ (root)`
-3. Site goes live at `https://<username>.github.io` (or `/reponame`) within a minute or two
+A local AI-assistant project exploring conversational interaction, memory, voice, and tool-driven workflows.
 
-## Before going live
+### NEXUS
 
-- [ ] Terminal `contact` command and the contact button both link to `https://t.me/Abdelrahmann17` — confirm that's correct
-- [ ] Swap `og.svg` for a `.png`/`.jpg` if you want previews on platforms that don't render SVG in link cards (Twitter/X sometimes doesn't) — easiest: screenshot the hero section
-- [ ] If you buy a custom domain, add it in Vercel/GitHub Pages settings and update `og:image`/`twitter:image` to an absolute URL (currently relative — works once a domain is attached)
+An experimental software project centered around building connected AI/software systems and practical backend infrastructure.
 
-## Local preview
+See the portfolio itself for the current project descriptions and implementation details.
 
-No server needed — just open `index.html` directly in a browser, or run any static server:
+## Tech
 
-```
+The portfolio is intentionally lightweight:
+
+- HTML
+- CSS
+- JavaScript
+- Vercel serverless functions
+- OpenRouter for the portfolio assistant
+- Upstash Redis for production rate limiting
+
+The site has no frontend framework or build step.
+
+## Run locally
+
+You can preview the static site directly by opening `index.html`.
+
+For a local static server:
+
+```bash
 npx serve .
 ```
 
-## AI portfolio agent
+The AI endpoint requires the environment variables described below and is intended to run through Vercel's serverless runtime.
 
-The hero interaction uses an OpenRouter-backed serverless endpoint at `/api/chat`. The API key is **never put in the browser**.
+## Deploy
 
-### Vercel setup
+### Vercel
 
-1. Import the repo into Vercel.
-2. In **Project Settings → Environment Variables**, add:
-   - `OPENROUTER_API_KEY` — your OpenRouter API key
-   - `OPENROUTER_MODEL` — optional; defaults to `openrouter/free`
-   - `SITE_URL` — optional; your deployed site URL
-3. Redeploy.
+Vercel is the recommended deployment target because the site includes `/api/chat`.
 
-OpenRouter's chat completions endpoint uses a Bearer API key and supports the `HTTP-Referer` and `X-Title` attribution headers. The free router can be used with `openrouter/free`; model availability can change over time.
+1. Import this repository into Vercel.
+2. Use **Other / No Framework** as the framework preset.
+3. Leave the build command empty.
+4. Use the repository root as the output/root directory.
+5. Add the required environment variables.
+6. Deploy.
 
-**Important:** GitHub Pages alone cannot run `/api/chat`, because it only hosts static files. Keep the code in GitHub and deploy the same repository on Vercel (or another serverless host) for the AI agent to work.
+### Environment variables
 
+Set these in Vercel Project Settings → Environment Variables:
 
-## AI usage protection
+```text
+OPENROUTER_API_KEY=your_key
+OPENROUTER_MODEL=openrouter/free
+SITE_URL=https://your-domain.example
+UPSTASH_REDIS_REST_URL=https://your-database.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your_token
+```
 
-The portfolio agent is limited to **15 AI replies per IP address per 24 hours**. The server enforces this before making an OpenRouter request, so hitting the limit does not consume another model response.
+`OPENROUTER_API_KEY` and `UPSTASH_REDIS_REST_TOKEN` are secrets. **Never commit their real values to GitHub.**
 
-For production on Vercel, connect an Upstash Redis database and set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`. This makes the limit shared across serverless instances. If those variables are absent, the API falls back to a best-effort in-memory limiter for local/development use.
+For local development, copy `.env.example` to `.env` and fill in the values. Keep `.env` out of version control.
 
-After a few useful exchanges the UI nudges visitors toward contacting Abdelrahman, and after 15 replies the agent stops making model requests and gives them the contact link.
+## AI assistant
 
-The agent is intentionally portfolio-only and solution-oriented: it should not dismiss custom project ideas. It connects requests to demonstrated skills and explains a plausible approach without falsely claiming prior experience.
+The portfolio assistant is deliberately scoped to the portfolio. Its job is to:
+
+- explain projects and technologies shown on the site
+- answer visitor questions using the portfolio context
+- discuss how Abdelrahman's demonstrated skills could apply to a new project
+- help turn a visitor's idea into a useful starting point
+- guide serious visitors toward direct contact
+
+It should not invent previous experience or pretend a project was already completed when it was not.
+
+### Usage protection
+
+The API enforces a limit of **15 AI replies per IP address per 24 hours** before making another model request. In production, Upstash Redis provides shared rate-limit state across Vercel serverless instances.
+
+After the visitor has had useful exchanges, the UI encourages them to contact Abdelrahman directly. Once the limit is reached, the assistant stops making model requests and directs the visitor to contact him.
+
+## Contact
+
+The portfolio currently links the contact flow to:
+
+**Telegram:** [@Abdelrahmann17](https://t.me/Abdelrahmann17)
+
+Update the link in the site if your preferred contact method changes.
+
+## Repository structure
+
+```text
+.
+├── api/
+│   └── chat.js        # serverless AI endpoint
+├── index.html          # portfolio UI
+├── 404.html            # fallback page
+├── favicon.svg         # browser icon
+├── og.svg              # social preview artwork
+├── vercel.json         # Vercel configuration
+├── package.json        # project metadata
+└── .env.example        # environment variable template
+```
+
+## License
+
+This repository contains a personal portfolio. Unless a separate license is added, the code and design should not be treated as an open-source template for redistribution.
