@@ -4,9 +4,7 @@ A personal portfolio showcasing software engineering, AI, backend systems, and i
 
 ## Live Portfolio
 
-**[Visit the portfolio](https://your-site.vercel.app)**
-
-> Replace the URL above with the final Vercel/custom-domain URL after deployment.
+**[Visit the portfolio](https://abdelrahmann-portfolio.vercel.app/)**
 
 ## What This Project Demonstrates
 
@@ -29,17 +27,29 @@ A personal AI assistant focused on conversational interaction, local tooling, me
 
 **Focus:** AI · Python · APIs · automation
 
+### BATCOMPUTER / STAR
+
+A real-time intelligence platform combining live streaming, an LLM backend, semantic memory, and voice output.
+
+**Focus:** AI · real-time systems · knowledge systems · voice
+
+### ARIA
+
+A local-first AI execution kernel focused on tool execution, session-layer reliability, and learned plan scoring.
+
+**Focus:** agents · local AI · tool execution · systems architecture
+
 ### NEXUS
 
-A software project exploring structured data, application logic, and intelligent workflows.
+A B2B AI agent with native function calling, automatic schema discovery, safety guardrails, and audit logging.
 
-**Focus:** backend · databases · application architecture
+**Focus:** AI agents · APIs · safety · backend architecture
 
-### Portfolio AI
+### AURORA
 
-An interactive AI assistant built into this portfolio. It answers questions about my work and technical capabilities using the portfolio's own context.
+A mobile application with secure authentication, password hashing, token sessions, and custom UI components.
 
-**Focus:** LLMs · serverless APIs · JavaScript · rate limiting
+**Focus:** mobile development · authentication · application security
 
 ## Technology
 
@@ -52,9 +62,11 @@ An interactive AI assistant built into this portfolio. It answers questions abou
 **AI & Systems**
 - LLM integration
 - AI agents
+- Local and cloud models
 - APIs
 - WebSockets
-- automation
+- Semantic memory
+- Automation
 
 **Frontend & Deployment**
 - HTML
@@ -92,21 +104,21 @@ For the static portfolio, open `index.html` or run a local server:
 npx serve .
 ```
 
-The AI endpoint requires the appropriate server-side environment variables when running through Vercel.
+The portfolio AI uses a server-side API endpoint and requires its deployment environment variables when running the full application through Vercel.
 
 ## Deployment
 
-The portfolio is designed to deploy directly from GitHub to Vercel.
+The portfolio is deployed on Vercel and connected to this GitHub repository.
 
-The frontend is public, while private service credentials are configured through deployment environment variables rather than committed to the repository.
+Private service credentials are configured through deployment environment variables and are not committed to the repository.
 
 ## Working With Me
 
-If you're looking for someone to build an application, AI-powered feature, backend system, automation, or custom software, get in touch through the portfolio.
+If you're looking for someone to build an application, AI-powered feature, backend system, automation, or custom software, get in touch.
 
-**Portfolio:** https://your-site.vercel.app
+**Portfolio:** [abdelrahmann-portfolio.vercel.app](https://abdelrahmann-portfolio.vercel.app/)
 
-**Contact:** https://t.me/Abdelrahmann17
+**Contact:** [Telegram](https://t.me/Abdelrahmann17)
 
 ## Note
 
