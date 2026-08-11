@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "dependencies": {
-    "@upstash/redis": "^1.35.3"
-  }
-}
