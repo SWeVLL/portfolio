@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Abdelrahman — Systems Builder</title>
 <meta name="description" content="Independent developer building AI systems, agents, mobile apps, and real-time backends — architecture through deployment, solo.">
 <meta name="theme-color" content="#0B0E0C">
@@ -42,14 +42,15 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   
-  /* STRICT HORIZONTAL LOCKDOWN */
+  /* STRICT HORIZONTAL & ZOOM LOCKDOWN */
   html, body {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden !important;
     position: relative;
-    touch-action: pan-y; /* Disables horizontal panning gestures on main body */
+    touch-action: pan-y;
     overscroll-behavior-x: none;
+    -webkit-text-size-adjust: 100%; /* Disables iOS automatic font/zoom scaling */
   }
   
   html{ scroll-behavior:smooth; }
@@ -127,7 +128,7 @@
     overflow-x:auto; overscroll-behavior-x:contain;
     -webkit-overflow-scrolling:touch;
     scrollbar-width:none;
-    touch-action:pan-x; /* Allows horizontal navigation scrolling locally */
+    touch-action:pan-x;
     scroll-snap-type:x proximity;
   }
   .nav-links::-webkit-scrollbar{display:none;}
@@ -155,7 +156,7 @@
     padding-top:72px;
     padding-bottom:32px;
     position:relative;
-    overflow: hidden; /* Clips decorative lighting */
+    overflow: hidden;
     width: 100%;
   }
   header.hero::before{
@@ -269,7 +270,7 @@
   .agent-input-row:focus-within{background:rgba(16,20,15,.92);}
   .agent-input-row .p{color:var(--green);font-family:var(--mono);font-size:13px;transition:text-shadow .25s;}
   .agent-input-row:focus-within .p{text-shadow:0 0 10px rgba(61,255,154,.7);}
-  .agent-input{flex:1;min-width:0;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:13px;color:var(--text);caret-color:var(--green);position:relative;z-index:1;}
+  .agent-input{flex:1;min-width:0;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:14px;color:var(--text);caret-color:var(--green);position:relative;z-index:1;}
   .agent-input::placeholder{color:var(--text-mute);transition:color .25s;}
   .agent-input-row:focus-within .agent-input::placeholder{color:var(--text-dim);}
   .agent-send{border:1px solid var(--green);background:var(--green);color:var(--bg);font:800 10.5px var(--mono);padding:10px 14px;border-radius:5px;cursor:pointer;transition:box-shadow .15s,transform .15s;box-shadow:0 0 0 rgba(61,255,154,0);min-height:36px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -440,8 +441,11 @@
     .section-head{margin-bottom:32px;}
   }
 
-  /* Expand breakpoint to 768px so process items never squeeze horizontally */
   @media (max-width:768px){
+    /* 16px input font size stops iOS Safari from triggering viewport auto-zoom */
+    .agent-input, .float-pill-input {
+      font-size: 16px !important;
+    }
     .stat-row{grid-template-columns:repeat(2,1fr); margin-top:28px;}
     .proc-header{display:none;}
     .proc-row{
