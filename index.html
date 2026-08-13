@@ -449,6 +449,46 @@
   .agent-locked strong{color:var(--green);}
   .agent-locked a{color:var(--green);text-decoration:none;}
   .agent-locked a:hover{text-decoration:underline;}
+
+  /* floating gemini-style pill */
+  .float-pill{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(90px);
+    width:min(480px, calc(100vw - 32px));
+    z-index:60;
+    opacity:0; pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .float-pill.visible{opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto;}
+  .float-pill-ring{
+    position:absolute; inset:-2px; border-radius:999px;
+    background:conic-gradient(from var(--pill-angle,0deg),
+      var(--green), var(--amber), #7DD3FF, #C792FF, var(--green));
+    filter:blur(0.5px);
+    opacity:0.85;
+    transition:opacity .2s;
+  }
+  .float-pill:hover .float-pill-ring{opacity:1;}
+  .float-pill-inner{
+    position:relative; display:flex; align-items:center; gap:10px;
+    background:var(--bg); border-radius:999px;
+    padding:13px 20px 13px 18px;
+    margin:2px;
+  }
+  .float-pill-icon{color:var(--green); flex-shrink:0; animation:sparkle-spin 6s linear infinite;}
+  @keyframes sparkle-spin{ to{ transform:rotate(360deg); } }
+  .float-pill-input{
+    flex:1; min-width:0; background:transparent; border:none; outline:none;
+    font-family:var(--sans); font-size:14px; color:var(--text);
+    caret-color:var(--green);
+  }
+  .float-pill-input::placeholder{color:var(--text-mute);}
+  @media (max-width:640px){
+    .float-pill{bottom:16px;}
+    .float-pill-inner{padding:11px 16px 11px 14px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .float-pill-icon{animation:none;}
+  }
 </style>
 
 <style id="portfolio-ai-markdown">
@@ -739,6 +779,17 @@
   </div>
 </footer>
 
+<div class="float-pill" id="floatPill">
+  <div class="float-pill-ring" id="floatPillRing"></div>
+  <div class="float-pill-inner">
+    <svg class="float-pill-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 1.5c.4 2.6 1.9 4.1 4.5 4.5-2.6.4-4.1 1.9-4.5 4.5-.4-2.6-1.9-4.1-4.5-4.5C6.1 5.6 7.6 4.1 8 1.5z" fill="currentColor"/>
+      <path d="M13 10c.2 1.1.9 1.8 2 2-1.1.2-1.8.9-2 2-.2-1.1-.9-1.8-2-2 1.1-.2 1.8-.9 2-2z" fill="currentColor"/>
+    </svg>
+    <input class="float-pill-input" id="floatPillInput" type="text" autocomplete="off" spellcheck="false" placeholder="Ask about the portfolio…" aria-label="Ask the portfolio AI">
+  </div>
+</div>
+
 <script>
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1017,6 +1068,62 @@
       document.getElementById('copyNote').textContent = TELEGRAM;
     });
   });
+
+  /* floating gemini-style pill */
+  (() => {
+    const pill = document.getElementById('floatPill');
+    const ring = document.getElementById('floatPillRing');
+    const pillInput = document.getElementById('floatPillInput');
+    if(!pill || !ring || !pillInput) return;
+
+    // rotate the conic-gradient angle to track the cursor relative to the pill center
+    let rafId = null;
+    function updateAngle(clientX, clientY){
+      if(reduced) return;
+      const rect = pill.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(clientY - cy, clientX - cx) * (180 / Math.PI) + 90;
+      if(rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        ring.style.setProperty('--pill-angle', angle + 'deg');
+      });
+    }
+    window.addEventListener('mousemove', e => updateAngle(e.clientX, e.clientY), {passive:true});
+
+    // fallback slow auto-rotate when reduced motion isn't set but no mouse has moved yet
+    let autoAngle = 0;
+    let autoTimer = null;
+    if(!reduced){
+      autoTimer = setInterval(() => {
+        autoAngle = (autoAngle + 1) % 360;
+        ring.style.setProperty('--pill-angle', autoAngle + 'deg');
+      }, 50);
+      window.addEventListener('mousemove', () => { clearInterval(autoTimer); }, {once:true});
+    }
+
+    // visible only once the real chat widget has scrolled out of view
+    const agentBoxEl = document.getElementById('agentBox');
+    if(agentBoxEl){
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          pill.classList.toggle('visible', !en.isIntersecting && en.boundingClientRect.top < 0);
+        });
+      }, {threshold:0});
+      io.observe(agentBoxEl);
+    }
+
+    function submitPill(){
+      const text = pillInput.value.trim();
+      if(!text) return;
+      pillInput.value = '';
+      agentBoxEl?.scrollIntoView({behavior: reduced ? 'auto' : 'smooth', block:'center'});
+      setTimeout(() => askAgent(text), reduced ? 0 : 450);
+    }
+    pillInput.addEventListener('keydown', e => {
+      if(e.key === 'Enter' && !e.isComposing){ e.preventDefault(); submitPill(); }
+    });
+  })();
 </script>
 
 </body>
