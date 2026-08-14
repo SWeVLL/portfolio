@@ -1125,7 +1125,8 @@
         agentStatus.textContent = '● online · want to work together?';
       }
     }catch(err){
-      reply.textContent = 'I’m unavailable right now. Try again in a moment.';
+      const detail = err?.message && err.message !== 'request failed' ? ` (${err.message})` : '';
+      reply.textContent = `I'm unavailable right now.${detail} Try again in a moment.`;
       console.error(err);
       agentHistory.pop();
     }finally{
